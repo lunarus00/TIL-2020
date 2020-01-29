@@ -12,11 +12,20 @@
 3. `git init` 최상단
 4. `git add ~~` ~~는 파일명
     입력한 파일에 대해 add(git이 tracking)
-5. `git commit ~~` ~~는 파일명
+    git add . 의 경우 해당 폴더 내 전체
+5. `git commit -m "added README.md file"` 
     입력한 파일에 대해 commit
+6. `git log`
+    commit 한 log를 확인
+7. `git remote add AAA link`
+    AAA는 약자로 쓸 이름
+    link는 https://~ 링크
+    (github의 링크)
+8. `git push AAA master`
+    AAA는 위의 약자
+    master는 master 내 폴더 전체?
 
 
-***
 
 ```
 $ 
