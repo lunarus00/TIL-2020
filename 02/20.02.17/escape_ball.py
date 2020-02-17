@@ -19,18 +19,24 @@ def ball_move(field):
         go_red_j = red_j + for_j[k]
         go_blue_i = blue_i + for_i[k]
         go_blue_j = blue_j + for_j[k]
-        while field[go_red_i][go_red_j] != '#' and field[go_blue_i][go_blue_j] != '#':
+        while field[go_red_i][go_red_j] != '#' and field[go_blue_i][go_blue_j] != '#' and field[go_red_i][go_red_j] != 'B' and field[go_blue_i][go_blue_j] != 'R':
             if field[go_red_i][go_red_j] == '#' or field[go_red_i][go_red_j] == 'B':
                 go_red_i = red_i
                 go_red_j = red_j
             elif field[go_red_i][go_red_j] == 'O':
                 success = 1
-                return success
             if field[go_blue_i][go_blue_j] == '#' or field[go_blue_i][go_blue_j] == 'R':
                 go_blue_i = blue_i
                 go_blue_j = blue_j
             elif field[go_blue_i][go_blue_j] == 'O':
+                success = 0
                 return success
+        count_move += 1
+        if count_move <= 10:
+            ball_move(field)
+        else:
+            return success
+        count_move -= 1
     return success
 
 T = int(input())
@@ -39,7 +45,7 @@ for tc in range(T):
     N, M = list(map(int, input().split()))
     field = []
     for i in range(N):
-        field.append(list(map(lambda x: x, input().split())))
+        field.append(input())
     count_move = 0
     success = 0
     print(ball_move(field))
