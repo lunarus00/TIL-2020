@@ -33,3 +33,18 @@ def delete(request, article_pk):
     article = Article.objects.get(pk=article_pk)
     article.delete()
     return redirect('article:index')
+
+def update(request, article_pk):
+    article = Article.objects.get(pk=article_pk)
+    if request.method == 'POST':
+        form = ArticleForm(request.POST)
+        if form.is_valid():
+            article = form.saver()
+            return redirect('article:detail', article.pk)
+    else:
+        form = ArticleForm(instance=article)
+    context = {
+        'article': article,
+        'form': form,
+    }
+    return render(request, 'article/create.html', context)
