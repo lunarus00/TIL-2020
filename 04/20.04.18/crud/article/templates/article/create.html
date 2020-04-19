@@ -1,7 +1,12 @@
 {% extends 'base.html' %}
 
 {% block body %}
-    <form action="">
+    <h2>NEW</h2>
+    <form action="{% url 'article:create' %}" method="POST">
+        {{ form.as_p }}
+        {% csrf_token %}
         
+        <button>작성완료</button>
     </form>
+    <a href="{% url 'article:index' %}">BACK</a>
 {% endblock %}

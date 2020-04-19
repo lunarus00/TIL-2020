@@ -2,10 +2,9 @@
 
 {% block body %}
     <h1>Index</h1>
+    <a href="{% url 'article:create' %}">새 게시글 작성</a>
     {% for article in articles %}
-        <h2>Title : {{ title }}</h2>
-        <h2>Content : {{ content }}</h2>
-        <p>created_at : {{ created_at }}</p>
-        <p>updated_at : {{ updated_at }}</p>
+        <h2><a href="{% url 'article:detail' article.pk %}">Title : {{ article.title }}</a></h2>
+        <hr>
     {% endfor %}
 {% endblock %}
