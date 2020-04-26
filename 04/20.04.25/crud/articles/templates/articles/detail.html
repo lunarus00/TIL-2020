@@ -1,0 +1,12 @@
+{% extends 'base.html' %}
+
+{% block content %}
+    <h2>Title : {{ article.title }}</h2>
+    <h4>Content : {{ article.content }}</h4>
+    <p>created : {{ article.created_at }}</p>
+    <p>updated : {{ article.updated_at }}</p>
+
+    <a href="{% url 'articles:index' %}">BACK</a>
+    <a href="{% url 'articles:update' article.pk %}">Update</a>
+    <a href="{% url 'articles:delete' article.pk %}">Delete</a>
+{% endblock %}
