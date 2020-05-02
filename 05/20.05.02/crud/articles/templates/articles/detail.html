@@ -1,0 +1,37 @@
+{% extends 'base.html' %}
+
+{% block content %}
+    <a href="{% url 'articles:index' %}">BACK</a>
+    <h1>{{ article.pk }} : {{ article.title }}</h1>
+    <p>{{ article.user.username }}님</p>
+    <p>작성 : {{ article.created_at }} | 수정: {{ article.updated_at }}</p>
+    {% if article.user == request.user %}
+        <form action="{% url 'articles:delete' article.pk %}" method="POST">
+            {% csrf_token %}
+            <button>삭제</button>
+        </form>
+    {% endif %}
+    {% with article_like_users=article.like_users.all %}
+        {% if request.user in article_like_users %}
+            <a href="{% url 'articles:like' article.pk %}">
+                좋아요 취소
+            </a>
+        {% else %}
+            <a href="{% url 'articles:like' article.pk %}">
+                좋아요
+            </a>
+        {% endif %}
+        <p>{{ article_like_users|length }}</p>
+    {% endwith %}
+    <hr>
+    <p>{{ article.content }}</p>
+    {% for comment in article.comment_set.all %}
+        <li>{{ comment.user.username }} : {{ comment.content }}</li>
+    {% endfor %}
+    <hr>
+    <form action="{% url 'articles:comments_create' article.pk %}" method="POST">
+        {% csrf_token %}
+        {{ form.as_p }}
+        <button>작성</button>
+    </form>
+{% endblock %}

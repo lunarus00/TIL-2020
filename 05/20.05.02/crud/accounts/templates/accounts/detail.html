@@ -1,0 +1,37 @@
+{% extends 'base.html' %}
+
+{% block content %}
+    <a href="{% url 'articles:index' %}">BACK</a>
+    <hr>
+    {{ user.pk }} : {{ user.username }}
+    {% with user_followers=user.followers.all %}
+        {% if request.user == user %}
+            <a href="{% url 'accounts:update' %}">회원 수정</a>
+            <form action="{% url 'accounts:delete' %}" method='POST'>
+                {% csrf_token %}
+                <button>회원 탈퇴</button>
+            </form>
+        {% else %}
+            {% if request.user in user_followers %}
+                <a href="{% url 'accounts:follow' user.pk %}">팔로우 취소</a>
+            {% else %}
+                <a href="{% url 'accounts:follow' user.pk %}">팔로우</a>
+            {% endif %}
+        {% endif %}
+        <p> {{ user_followers|length }}명이 팔로우하고 있습니다.</p>
+        <p> {{ user.followings.count }}명을 {{ user.username }}이 팔로우하고 있습니다.</p>
+    {% endwith %}
+    <hr>
+    <h3>작성한 글 목록</h3>
+    {% for article in user.article_set.all %}
+        <a href="{% url 'articles:detail' article.pk %}">
+            <p>{{ article.title }}</p>
+        </a>
+    {% endfor %}
+    <h3>좋아요한 글 목록</h3>
+    {% for article in user.like_articles.all %}
+        <a href="{% url 'articles:detail' article.pk %}">
+            <p>{{ article.title }}</p>
+        </a>
+    {% endfor %}
+{% endblock %}
