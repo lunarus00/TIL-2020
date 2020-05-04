@@ -10,9 +10,9 @@
 - ```sql
   CREATE TABLE tablename (
   	id INTEGER PRIMARY KEY AUTOINCREMENT,
-      name TEXT NOT NULL,
-      age INTEGER,
-      address TEXT
+    name TEXT NOT NULL,
+    age INTEGER,
+    address TEXT
   );
   ```
 
