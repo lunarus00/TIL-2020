@@ -2,6 +2,14 @@
 
 {% block content %}
     <h1>Index</h1>
+    {% if user.is_authenticated %}
+        <h2>{{ user.username }}님 환영합니다.</h2>
+        <a href="{% url 'accounts:logout' %}">LOGOUT</a>
+    {% else %}
+        <a href="{% url 'accounts:signin' %}">SIGNIN</a>
+        <a href="{% url 'accounts:login' %}">LOGIN</a>
+    {% endif %}
+    <hr>
     <a href="{% url 'articles:create' %}">CREATE</a>
     {% for article in articles %}
         <h3><a href="{% url 'articles:detail' article.pk %}">{{ article.title }}</a></h3>
