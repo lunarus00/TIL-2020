@@ -8,4 +8,12 @@
     <a href="{% url 'articles:index' %}">BACK</a>
     <a href="{% url 'articles:delete' article.pk %}">DELETE</a>
     <a href="{% url 'articles:update' article.pk %}">UPDATE</a>
+    {% for comment in article.comment_set.all %}
+        <p>{{ comment.content }}</p>
+    {% endfor %}
+    <form action="{% url 'articles:comment_create' article.pk %}" method = 'POST'>
+        {% csrf_token %}
+        {{ form.as_p }}
+        <button>Comment Create</button>
+    </form>
 {% endblock %}

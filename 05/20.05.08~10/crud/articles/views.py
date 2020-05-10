@@ -1,6 +1,6 @@
 from django.shortcuts import render, redirect
-from .models import Article
-from .forms import ArticleForm
+from .models import Article, Comment
+from .forms import ArticleForm, CommentForm
 
 def index(request):
     articles = Article.objects.all()
@@ -47,3 +47,13 @@ def update(request, article_pk):
         'form': form,
     }
     return render(request, 'articles/form.html', context)
+
+def comment_create(request, article_pk):
+    article = Article.objects.get(pk = article_pk)
+    if request.method == 'POST':
+        form = CommentForm(request.POST)
+        if form.is_valid():
+            comment = form.save(commit=False)
+            comment.article = article
+            comment.save()
+    return redirect('articles:detail', article_pk)
