@@ -24,8 +24,10 @@ def create(request):
 
 def detail(request, article_pk):
     article = Article.objects.get(pk=article_pk)
+    form = CommentForm
     context = {
         'article': article,
+        'form': form,
     }
     return render(request, 'articles/detail.html', context)
 
@@ -56,4 +58,4 @@ def comment_create(request, article_pk):
             comment = form.save(commit=False)
             comment.article = article
             comment.save()
-    return redirect('articles:detail', article_pk)
+    return redirect('articles:detail', article.pk)
