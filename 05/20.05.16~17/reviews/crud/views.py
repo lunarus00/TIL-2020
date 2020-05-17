@@ -1,4 +1,25 @@
-from django.shortcuts import render
+from django.shortcuts import render, redirect
+from .models import Article
+from .forms import ArticleForm
 
 def index(request):
-    return render(request, 'crud/index.html')
+    articles = Article.objects.all()
+    context = {
+        'articles':articles
+    }
+    return render(request, 'crud/index.html', context)
+
+def create(request):
+    if request.method == 'POST':
+        form = ArticleForm(request.POST)
+        if form.is_valid():
+            article = form.save(commit=False)
+            article.user = request.user
+            article.save()
+            redirect('crud:index')
+    else:
+        form = ArticleForm
+    context = {
+        'form': form
+    }
+    return render(request, 'crud/form.html', context)

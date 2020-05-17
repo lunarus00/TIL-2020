@@ -9,4 +9,12 @@
         <a href="{% url 'accounts:create' %}">Signup</a>
         <a href="{% url 'accounts:login' %}">Login</a>
     {% endif %}
+    <hr>
+    <a href="{% url 'crud:create' %}">Create</a>
+    <hr>
+    {% for article in articles %}
+        <p>제목 : {{ article.title }}</p>
+        <p>작성자 : {{ article.user }}</p>
+        <hr>
+    {% endfor %}
 {% endblock %}
