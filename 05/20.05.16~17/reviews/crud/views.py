@@ -1,6 +1,6 @@
 from django.shortcuts import render, redirect, get_object_or_404
-from .models import Article
-from .forms import ArticleForm
+from .models import Article, Comment
+from .forms import ArticleForm, CommentForm
 
 def index(request):
     articles = Article.objects.all()
@@ -26,8 +26,10 @@ def create(request):
 
 def detail(request, article_pk):
     article = get_object_or_404(Article, pk=article_pk)
+    form = CommentForm()
     context = {
-        'article': article
+        'article': article,
+        'form': form
     }
     return render(request, 'crud/detail.html', context)
 
@@ -49,3 +51,23 @@ def update(request, article_pk):
         'form': form
     }
     return render(request, 'crud/form.html', context)
+
+def comment_create(request, article_pk):
+    article = get_object_or_404(Article, pk=article_pk)
+    if request.method == 'POST':
+        form = CommentForm(request.POST)
+        if form.is_valid():
+            comment = form.save(commit=False)
+            comment.user = request.user
+            comment.article = article
+            comment.save()
+            return redirect('crud:detail', article.pk)
+    else:
+        return redirect('crud:detail', article.pk)
+
+def comment_delete(request, article_pk, comment_pk):
+    
+    if request.method == 'POST':
+        comment = get_object_or_404(Comment, pk=comment_pk)
+        comment.delete()
+    return redirect('crud:detail', article_pk)

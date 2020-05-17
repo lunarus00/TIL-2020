@@ -13,4 +13,21 @@
     {% endif %}
     <br>
     <a href="{% url 'crud:index' %}">Back</a>
+    <hr>
+    {% for comment in article.comment_set.all %}
+        {{ comment.user }} : {{ comment.content }}
+        {% if request.user == comment.user %}
+            <form action="{% url 'crud:comment_delete' article.pk comment.pk %}" method='POST'>
+                {% csrf_token %}
+                <button>Delete</button>
+            </form>
+        {% endif %}
+        <br>
+    {% endfor %}
+    <br>
+    <form action="{% url 'crud:comment_create' article.pk %}" method='POST'>
+        {% csrf_token %}
+        {{ form.as_p }}
+        <button>Submit</button>
+    </form>
 {% endblock %}
