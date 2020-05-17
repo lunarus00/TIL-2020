@@ -10,6 +10,12 @@
     {% if request.user == article.user %}
         <a href="{% url 'crud:update' article.pk %}">Update</a>
         <a href="{% url 'crud:delete' article.pk %}">Delete</a>
+    {% else %}
+        {% if request.user in article.like_users.all %}
+            <a href="{% url 'crud:like' article.pk %}">Dislike</a>
+        {% else %}
+            <a href="{% url 'crud:like' article.pk %}">Like</a>
+        {% endif %}
     {% endif %}
     <br>
     <a href="{% url 'crud:index' %}">Back</a>
