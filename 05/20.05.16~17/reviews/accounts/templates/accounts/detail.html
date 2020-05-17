@@ -1,0 +1,24 @@
+{% extends 'base.html' %}
+
+{% block content %}
+    <h1>{{ user.username }} 님의 프로필</h1>
+    {% with user_followers=user.followers.all %}
+        {% if user != request.user %}
+            {% if request.user in user.followers.all %}
+                <a href="{% url 'accounts:follow' user.pk %}">팔로우 취소</a>
+            {% else %}
+                <a href="{% url 'accounts:follow' user.pk %}">팔로우</a>
+            {% endif %}
+        {% endif %}
+        <hr>
+        <p>{{ user_followers|length }}명이 {{user.username }}님을 팔로우하고 있습니다.</p>
+        <br>
+        <p>{{ user.followings.count }}명을 {{user.username }}님이 팔로우하고 있습니다.</p>
+        <hr>
+    {% endwith %}
+    {% for article in user.article_set.all %}
+        <p><a href="{% url 'crud:detail' article.pk %}">{{ article.title }}</a></p>
+    {% endfor %}
+    <hr>
+    <a href="{% url 'crud:index' %}">Back</a>
+{% endblock %}

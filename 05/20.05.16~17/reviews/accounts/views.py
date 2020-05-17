@@ -35,3 +35,18 @@ def login(request):
 def logout(request):
     auth_logout(request)
     return redirect('crud:index')
+
+def detail(request, user_pk):
+    user = get_object_or_404(get_user_model(), pk=user_pk)
+    context = {
+        'user': user,
+    }
+    return render(request, 'accounts/detail.html', context)
+
+def follow(request, user_pk):
+    User = get_object_or_404(get_user_model(), pk=user_pk)
+    if request.user in User.followers.all():
+        User.followers.remove(request.user)
+    else:
+        User.followers.add(request.user)
+    return redirect('accounts:detail', User.pk)

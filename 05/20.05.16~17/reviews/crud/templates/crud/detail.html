@@ -1,0 +1,16 @@
+{% extends 'base.html' %}
+
+{% block content %}
+    <h2>제목 : {{ article.title }}</h2>
+    <h3><a href="{% url 'accounts:detail' article.user.pk %}">작성자 : {{ article.user }}</a></h3>
+    <p>작성일자 : {{ article.created_at }}</p>
+    <p>수정일자 : {{ article.updated_at }}</p>
+    <p>내용 : {{ article.content }}</p>
+    
+    {% if request.user == article.user %}
+        <a href="{% url 'crud:update' article.pk %}">Update</a>
+        <a href="{% url 'crud:delete' article.pk %}">Delete</a>
+    {% endif %}
+    <br>
+    <a href="{% url 'crud:index' %}">Back</a>
+{% endblock %}
