@@ -6,9 +6,12 @@ start_time = time.time()
 
 def find_max():
     global count_num, max_percent, check_sum
-    if count_num == N:
+    if check_sum <= max_percent:
+        return
+    elif count_num == N:
         if check_sum > max_percent:
             max_percent = check_sum
+            return
     else:
         for j in range(N):
             if visited_person[j] == 0:
