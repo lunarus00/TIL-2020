@@ -18,6 +18,17 @@ def find_food(number):
                     visited[k][l] = value
                     check_val += value
 
+def johab(num, count_num):
+    global check_val, min_val
+    if check_val >= min_val:
+        return
+    elif count_num == 0:
+        if check_val < min_val:
+            min_val = check_val
+    for j in range(num, food_length):
+        find_food(food_list[j])
+        johab(j+1, count_num-1)
+
 T = int(input())
 
 for tc in range(T):
@@ -35,13 +46,8 @@ for tc in range(T):
     for i in range(food_length):
         check_val = 0
         visited = [[0] * N for j in range(N)]
-        for j in range(i, food_length):
-            find_food(food_list[j])
-            if check_val >= min_val:
-                break
-            elif j == food_length-1:
-                if check_val < min_val:
-                    min_val = check_val
+        johab(i, food_length-i)
+
     print('#{} {}'.format(tc+1, min_val))
 
 print(start_time - time.time())
