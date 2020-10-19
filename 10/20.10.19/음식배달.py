@@ -4,30 +4,32 @@ sys.stdin = open('음식배달.txt')
 
 start_time = time.time()
 
-def find_food(number):
+def find_food():
     global min_val, check_val
-    y_num = number[0]
-    x_num = number[1]
-    check_val += map_list[y_num][x_num]
-    for k in range(1, N):
-        for l in range(1, N):
-            if map_list[k][l] == 1:
-                value = abs(k-y_num) + abs(l-x_num)
-                if visited[k][l] > value or visited[k][l] == 0:
-                    check_val -= visited[k][l]
-                    visited[k][l] = value
-                    check_val += value
+    visited = [[0] * N for j in range(N)]
+    for m in range(len(store_list)):
+        y_num = store_list[m][0]
+        x_num = store_list[m][1]
+        check_val += map_list[y_num][x_num]
+        for k in range(1, N):
+            for l in range(1, N):
+                if map_list[k][l] == 1:
+                    value = abs(k-y_num) + abs(l-x_num)
+                    if visited[k][l] > value or visited[k][l] == 0:
+                        check_val -= visited[k][l]
+                        visited[k][l] = value
+                        check_val += value
+    if check_val < min_val:
+        min_val = check_val
 
 def johab(num, count_num):
-    global check_val, min_val
-    if check_val >= min_val:
-        return
-    elif count_num == 0:
-        if check_val < min_val:
-            min_val = check_val
+    global check_val
     for j in range(num, food_length):
-        find_food(food_list[j])
+        store_list.append(food_list[j])
+        find_food()
+        check_val = 0
         johab(j+1, count_num-1)
+        store_list.pop()
 
 T = int(input())
 
@@ -45,7 +47,7 @@ for tc in range(T):
     min_val = 262144
     for i in range(food_length):
         check_val = 0
-        visited = [[0] * N for j in range(N)]
+        store_list = []
         johab(i, food_length-i)
 
     print('#{} {}'.format(tc+1, min_val))
